@@ -14,7 +14,7 @@ import com.example.simplecatsfactapplication.viewmodel.CatFactViewModel
 
 //main compose UI
 @Composable
-fun CatFactScreen(viewModel: CatFactViewModel) {
+fun CatFactUI(viewModel: CatFactViewModel) {
     val catFacts by viewModel.catFactsFlow.collectAsState(initial = emptyList())
 
     // to show the current fact index

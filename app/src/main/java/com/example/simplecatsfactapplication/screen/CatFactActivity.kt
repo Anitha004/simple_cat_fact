@@ -5,7 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.room.Room
 import com.example.simplecatsfactapplication.*
-import com.example.simplecatsfactapplication.api.CatFactService
+import com.example.simplecatsfactapplication.api.CatFactApiService
 import com.example.simplecatsfactapplication.repository.CatFactRepository
 import com.example.simplecatsfactapplication.ui.theme.CatFactAppTheme
 import com.example.simplecatsfactapplication.viewmodel.CatFactViewModel
@@ -13,7 +13,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 //main activity to display the facts
-class MainActivity : ComponentActivity() {
+class CatFactActivity : ComponentActivity() {
     private lateinit var database: CatFactsDatabase
 
     private val retrofit = Retrofit.Builder()
@@ -21,7 +21,7 @@ class MainActivity : ComponentActivity() {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-    private val catFactService = retrofit.create(CatFactService::class.java)
+    private val catFactApiService = retrofit.create(CatFactApiService::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,12 +33,12 @@ class MainActivity : ComponentActivity() {
         ).build()
 
         val catFactDao = database.catFactDao()
-        val catFactRepository = CatFactRepository(catFactService, catFactDao)
+        val catFactRepository = CatFactRepository(catFactApiService, catFactDao)
 
 
         setContent {
             CatFactAppTheme {
-                CatFactScreen(viewModel = CatFactViewModel(catFactRepository))
+                CatFactUI(viewModel = CatFactViewModel(catFactRepository))
             }
         }
     }
